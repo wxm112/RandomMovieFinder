@@ -1,31 +1,35 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { IMAGE_PREFIX } from '../fakeMoviesApi';
 
-const MovieListItem = ({ name, path, vote }) => {
+const MovieListItem = ({ movie, callback }) => {
     const { titleStyle, containerStyle, imageStyle, voteStyle, textContainerStyle } = styles;
     return (
-        <View style={containerStyle}>
-            <Image source={{ uri: `https://image.tmdb.org/t/p/w500${path}` }} style={imageStyle} />
-            <View style={textContainerStyle}>
-                <Text style={titleStyle}>{name}</Text>
-                <Text style={voteStyle}>{vote}</Text>
+        <TouchableOpacity onPress={() => { callback(movie); }}>
+            <View style={containerStyle}>
+                <Image source={{ uri: `${IMAGE_PREFIX}${movie.poster_path}` }} style={imageStyle} />
+                <View style={textContainerStyle}>
+                    <Text style={titleStyle}>{movie.title}</Text>
+                    <Text style={voteStyle}>{`${movie.vote_average}/10`}</Text>
+                </View>
             </View>
-        </View>
+        </TouchableOpacity>
     );
 };
 
 const styles = {
     titleStyle: {
-        fontSize: 15
+        fontSize: 15,
+        fontWeight: 'bold'
     },
     voteStyle: {
-        fontSize: 8,
+        fontSize: 12,
         paddingTop: 3
     },
     imageStyle: {
-        flex: 0.2,
-        height: 30,
-        width: 20,
+        flex: 0.15,
+        height: 40,
+        width: 30,
         resizeMode: 'contain'
     },
     containerStyle: {
@@ -33,7 +37,12 @@ const styles = {
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        padding: 10
+        paddingLeft: 30,
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingRight: 10,
+        borderBottomWidth: 1,
+        borderColor: '#ddd'
     },
     textContainerStyle: {
         flex: 0.8,
