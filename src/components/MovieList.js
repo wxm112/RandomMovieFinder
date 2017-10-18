@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, FlatList } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator } from 'react-native';
+import { connect } from 'react-redux';
 import MovieListItem from './MovieListItem';
 
 const renderSearchWord = (searchKeyword) => {
@@ -11,12 +12,8 @@ const renderSearchWord = (searchKeyword) => {
 
 class MovieList extends Component {
     static navigationOptions = ({ navigation }) => ({
-        title: renderSearchWord(navigation.state.params.searchKeyword)
+        title: renderSearchWord(navigation.state.params.keyword)
     });
-
-    state = {
-        moviesToDisplay: this.props.navigation.state.params.movies
-    }
 
     itemContainsKeyword(item, searchKeyword) {
         const itemTitle = item.title.toLowerCase();
@@ -29,10 +26,21 @@ class MovieList extends Component {
     }
 
     render() {
+        const { error, isLoading, moviesToDisplay } = this.props;
+        if (isLoading) {
+            return <ActivityIndicator color={'red'} style={{ flex: 1 }} />;
+        }
+        if (error) {
+            return (
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <Text>Something went wrong</Text>
+                </View>
+            );
+        }
         return (
             <View style={{ flex: 1 }}>
                 <FlatList
-                    data={this.state.moviesToDisplay}
+                    data={moviesToDisplay}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) =>
                         <MovieListItem
@@ -46,4 +54,10 @@ class MovieList extends Component {
     }
 }
 
-export default MovieList;
+const mapStateToProps = state => ({
+    moviesToDisplay: state.movies.movies,
+    error: state.movies.error,
+    isLoading: state.movies.isLoading
+});
+
+export default connect(mapStateToProps)(MovieList);

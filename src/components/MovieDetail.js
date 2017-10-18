@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView, Image } from 'react-native';
-import { IMAGE_PREFIX } from '../fakeMoviesApi';
+import { IMAGE_PREFIX } from '../moviesApi';
+import FavouriteButton from './FavouriteButton';
+
 
 class MovieDetail extends Component {
-    static navigationOptions = () => ({
+    static navigationOptions = ({ navigation }) => ({
         title: 'Movie',
+        headerRight: <FavouriteButton 
+           movie={navigation.state.params.movie}
+        />
     });
 
     render() {

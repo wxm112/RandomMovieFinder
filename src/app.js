@@ -1,12 +1,16 @@
-import { StackNavigator } from 'react-navigation';
-import Home from './components/Home';
-import MovieList from './components/MovieList';
-import MovieDetail from './components/MovieDetail';
+import React from 'react';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import reducer from './reducers';
+import AppNavigation from './components/AppNavigation';
 
-const App = StackNavigator({
-  Home: { screen: Home },
-  MovieList: { screen: MovieList },
-  MovieDetail: { screen: MovieDetail }
-});
+const store = createStore(reducer, {}, applyMiddleware(thunk));
+const App = () => (
+    <Provider store={store}>
+        <AppNavigation />
+    </Provider>
+);
 
 export default App;
+

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
-import { IMAGE_PREFIX } from '../fakeMoviesApi';
+import { IMAGE_PREFIX } from '../moviesApi';
 
 const MovieListItem = ({ movie, callback }) => {
     const { titleStyle, containerStyle, imageStyle, voteStyle, textContainerStyle } = styles;

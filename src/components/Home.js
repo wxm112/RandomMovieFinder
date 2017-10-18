@@ -4,9 +4,10 @@ import {
     View,
     Image
   } from 'react-native';
+  import { connect } from 'react-redux';
+  import { callMovieApi } from '../reducers/movies';
   import movieBoardImg from '../resources/movieBoardImg.png';
   import SearchBox from './SearchBox';
-  import * as fakeMoviesApi from '../fakeMoviesApi';
 
 class Home extends Component {
     static navigationOptions = {
@@ -22,11 +23,10 @@ class Home extends Component {
       searchKeyword: ''
     }
   
-    onSearchPressed(searchKeyword) {
-        const movies = fakeMoviesApi.search(searchKeyword);
-      this.props.navigation.navigate('MovieList', { 
-          searchKeyword,
-          movies
+    onSearchPressed = (keyword) => {
+      this.props.dispatchCallMovieApi(keyword);
+      this.props.navigation.navigate('MovieList', {
+        keyword
       });
     }
   
@@ -45,6 +45,10 @@ class Home extends Component {
       );
     }
   }
+
+  const mapDispatchToProps = dispatch => ({
+    dispatchCallMovieApi: keyword => dispatch(callMovieApi(keyword))
+  });
   
   const styles = {
     home: {
@@ -62,4 +66,4 @@ class Home extends Component {
     }
   };
 
-export default Home;
+export default connect(null, mapDispatchToProps)(Home);
